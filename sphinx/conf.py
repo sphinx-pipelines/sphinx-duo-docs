@@ -6,7 +6,7 @@ import sys
 # sys.path.insert(0, os.path.abspath('..'))
 
 # For the GitHub Cloud Runner, point to the parallel sibling folder that was cloned by the CI workflow:
-sys.path.insert(0, os.path.abspath('../../sphinx-sandbox-code'))
+sys.path.insert(0, os.path.abspath('../../sphinx-duo-code'))
 # ---------------------------------------------------------------------#
 
 project = 'Sphinx Sandbox: Docs Pipeline'
