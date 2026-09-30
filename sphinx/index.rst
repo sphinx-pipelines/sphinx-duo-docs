@@ -1,14 +1,15 @@
-Welcome to the Cross-Repository Docs Pipeline!
-==============================================
+Welcome to the sphinx-duo-docs repository!
+==========================================
 
-This isolated pipeline repository demonstrates how to pull source material 
-from a parallel, independent codebase repository and compile it seamlessly.
+This is the central gateway-file for the **sphinx-duo-docs** pipeline repository.
 
+The decoupled **sphinx-duo-docs** repository framework demonstrates a distributed architecture in which software components and their native reST documentation live under separate roofs.
+
+Table of Contents
+-----------------
 .. toctree::
    :maxdepth: 2
-   :caption: Sibling Codebase Reference:
+   :caption: Table of Contents:
 
-.. automodule:: codebase.example
-   :members:
-   :undoc-members:
-   :show-inheritance:
+   resources/rst/installation
+   resources/rst/usage
