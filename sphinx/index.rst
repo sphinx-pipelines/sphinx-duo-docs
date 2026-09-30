@@ -9,5 +9,6 @@ The decoupled **sphinx-duo-docs** repository framework demonstrates a distribute
    :maxdepth: 2
    :caption: Table of Contents:
 
+   resources/rst/api
    resources/rst/installation
    resources/rst/usage
