@@ -38,7 +38,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install sphinx sphinx-rtd-theme
 
-      # 5. Move into the documentation directory and run the build script:
+      # 5. Compile documentation by pointing to the sibling code folder path:
       - name: Compile Sphinx Documentation
         run: |
           export PYTHONPATH="${PYTHONPATH}:${GITHUB_WORKSPACE}/sphinx-duo-code"
@@ -50,10 +50,10 @@ jobs:
         with:
           path: sphinx/_build/html
 
-# --- Deployment Pipeline Sequence ---
-deploy-site:
-  needs: build-docs
-  runs-on: ubuntu-latest
-  steps:
+  # --- Deployment Pipeline Sequence ---
+  deploy-site:
+    needs: build-docs
+    runs-on: ubuntu-latest
+    steps:
     - name: Stream Site Live to GitHub Pages
       uses: actions/deploy-pages@v4
