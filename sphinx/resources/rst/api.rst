@@ -1,7 +1,7 @@
 API Module Reference
 ====================
 
-This section details the runtime geometries from inside the code-base module that are automatically extracted from inline source code docstrings.
+This section details the runtime geometries inside the decoupled companion code-base repository that are dynamically compiled over cross-repository networks.
 
 .. automodule:: codebase.example
    :members:
