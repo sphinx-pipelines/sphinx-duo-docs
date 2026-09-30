@@ -2,9 +2,14 @@ name: Continuous Integration - Remote Docs Compilation - Split Repos
 
 on:
   push:
-    branches: [ master, main ]
+    branches: [ master ]
   pull_request:
-    branches: [ master, main ]
+    branches: [ master ]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
   build-docs:
@@ -13,17 +18,15 @@ jobs:
       # 1. Checkout the independent documentation repository into a dedicated workspace directory:
       - name: Checkout Documentation
         uses: actions/checkout@v4
-        with:
-          path: sphinx-sandbox-docs
 
-      # 2. Checkout the independent code repository into a dedicated parallel sibling workspace directory:
+      # 2. Checkout the independent code repository into a dedicated parallel sibling workspace directory:      
       - name: Checkout Sibling Code
         uses: actions/checkout@v4
         with:
-          repository: sphinx-pipeline-sandbox/sphinx-sandbox-code
-          path: sphinx-sandbox-code
+          repository: sphinx-pipelines/sphinx-duo-code
+          path: sphinx-duo-code
 
-      # 3. Provide a clean, predictable Python execution-environment:
+      # 3. Provide a clean, predictable Python execution environment:
       - name: Set up Python Environment
         uses: actions/setup-python@v5
         with:
@@ -38,13 +41,19 @@ jobs:
       # 5. Move into the documentation directory and run the build script:
       - name: Compile Sphinx Documentation
         run: |
-          cd sphinx-sandbox-docs/docs
-          chmod +x build_local.sh
-          ./build_local.sh
+          export PYTHONPATH="${PYTHONPATH}:${GITHUB_WORKSPACE}/sphinx-duo-code"
+          sphinx-build -b html sphinx sphinx/_build/html
 
-      # 6. Run validation checks to make sure the sibling code imports and runs without errors:
-      - name: Execute Runtime Integrity Checks
-        run: |
-          export PYTHONPATH="${PYTHONPATH}:${GITHUB_WORKSPACE}/sphinx-sandbox-code"
-          python -c "from codebase.example import Circle; c = Circle(5); assert c.get_area() > 0"
-          echo "All structural runtime-checks passed successfully!"
+      # 6. Securely package the static HTML folder as a native website asset:
+      - name: Upload HTML Web Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: sphinx/_build/html
+
+# --- Deployment Pipeline Sequence ---
+deploy-site:
+  needs: build-docs
+  runs-on: ubuntu-latest
+  steps:
+    - name: Stream Site Live to GitHub Pages
+      uses: actions/deploy-pages@v4
